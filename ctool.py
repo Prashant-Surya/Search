@@ -2,6 +2,9 @@ import argparse
 import json
 import json_dump
 import os
+import tempfile
+
+tem=tempfile.NamedTemporaryFile(mode="w+")
 
 def main():
 	parser=argparse.ArgumentParser()
@@ -10,11 +13,8 @@ def main():
 	parser.add_argument("--dir",help="Directory to be searched in",default=os.getcwd())
 
 	args=parser.parse_args()
-	if args.type:
-		json_dump.indexing(os.getcwd(),args.type)
-	name=json_dump.return_file()
-	print(name)
-	f=open(name,'r')
-	
+	index=json_dump.indexing(args.dir,args.type,args.startswith)
+	json.dump(index,tem)
+	print(json_dump.return_file(tem))
 if __name__ == '__main__':
 	main()
